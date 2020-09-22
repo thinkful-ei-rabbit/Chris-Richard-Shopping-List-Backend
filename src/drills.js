@@ -14,7 +14,10 @@ function searchTerm(search) {
     .select('*')
     .where('name', 'ilike', `%${search}%`)
     .then(results => {
-        console.log(results)})
+        console.log(results)
+        knexInstance.destroy();
+    })
+    
 }
 
 //searchTerm(string);
@@ -25,7 +28,10 @@ function pagination(pageNumber) {
     return knexInstance('shopping_list')
     .limit(6)
     .offset(offset)
-    .then(result => console.log(result))
+    .then(result => {
+        console.log(result)
+        knexInstance.destroy();
+    })
 }
 
 //pagination(pageNumber);
