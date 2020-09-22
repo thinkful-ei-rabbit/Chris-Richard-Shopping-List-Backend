@@ -7,7 +7,8 @@ const knexInstance = knex({
 });
 
 const string = 'seitan';
-pageNumber = 1;
+const pageNumber = 1;
+const daysAgo = '11 days';
 
 function searchTerm(search) {
   return knexInstance('shopping_list')
@@ -35,3 +36,28 @@ function pagination(pageNumber) {
 }
 
 //pagination(pageNumber);
+
+function findTime(daysAgo) {
+    return knexInstance('shopping_list')
+    .select('*')
+    .where('date_added', '>', knexInstance.raw(`now() - '?? days'::INTERVAL`, daysAgo))
+    .then(result => {
+        console.log(result)
+        knexInstance.destroy();
+    })
+}
+
+//findTime(daysAgo)
+
+function totals() {
+    return knexInstance('shopping_list')
+    .select('category')
+    .sum('price')
+    .groupBy('category')
+    .then(result => {
+        console.log(result)
+        knexInstance.destroy();
+    })
+}
+
+totals()
